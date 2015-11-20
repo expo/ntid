@@ -1,4 +1,4 @@
-# NTID
+# NTID [![Circle CI](https://circleci.com/gh/exponentjs/ntid.svg?style=svg)](https://circleci.com/gh/exponentjs/ntid)
 
 NTIDs are IDs of the form `Type[...]` where the string between the square brackets may contain other NTIDs or a URL-safe Base64 string. NTIDs are designed to be:
 
