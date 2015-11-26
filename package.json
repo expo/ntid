@@ -1,6 +1,6 @@
 {
   "name": "ntid",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Self-documenting IDs that can be generated in any environment",
   "main": "build/ntid.js",
   "bin": "build/cli.js",
