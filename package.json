@@ -1,6 +1,6 @@
 {
   "name": "ntid",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Self-documenting IDs that can be generated in any environment",
   "main": "build/ntid.js",
   "bin": "build/cli.js",
@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "babel-cli": "^6.2.0",
-    "babel-core": "^6.2.0",
+    "babel-core": "^6.2.1",
     "babel-jest": "^6.0.1",
     "babel-plugin-syntax-flow": "^6.1.18",
     "babel-plugin-transform-flow-strip-types": "^6.1.18",
