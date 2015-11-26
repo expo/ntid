@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Self-documenting IDs that can be generated in any environment",
   "main": "build/ntid.js",
+  "bin": "build/cli.js",
   "files": [
     "build"
   ],
@@ -29,7 +30,8 @@
   },
   "homepage": "https://github.com/exponentjs/ntid#readme",
   "dependencies": {
-    "node-uuid": "^1.4.7"
+    "node-uuid": "^1.4.7",
+    "optimist": "^0.6.1"
   },
   "devDependencies": {
     "babel-cli": "^6.2.0",
