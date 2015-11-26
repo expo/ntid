@@ -5,12 +5,11 @@ import process from 'process';
 
 import ntid from './ntid';
 
-let argv = optimist
-  .usage('Usage: $0 <type>')
-  .argv;
+let parser = optimist.usage('Usage: $0 <type>');
+let { argv } = parser;
 
 if (argv._.length === 0) {
-  console.error('You must specify a type for an NTID');
+  parser.showHelp();
   process.exit(1);
 }
 if (argv._.length > 1) {
