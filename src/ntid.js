@@ -18,8 +18,8 @@
  *
  * @flow
  */
-import assert from 'assert';
-import uuid from 'node-uuid';
+import invariant from 'invariant';
+import uuidV4 from 'uuid/v4';
 
 export type ntid = string;
 
@@ -33,8 +33,8 @@ if (256 % UUID_ALPHABET.length !== 0) {
 
 export function makeId(type: string): ntid {
   let bytes = new Array(32);
-  uuid.v4(null, bytes, 0);
-  uuid.v4(null, bytes, 16);
+  uuidV4(null, bytes, 0);
+  uuidV4(null, bytes, 16);
 
   let body = bytes.slice(0, UUID_LENGTH).map(
     byte => UUID_ALPHABET[byte % UUID_ALPHABET.length]
@@ -42,17 +42,17 @@ export function makeId(type: string): ntid {
   return `${type}[${body}]`;
 }
 
-export function makeCompoundId(type: string, ids: Array<ntid>): ntid {
+export function makeCompoundId(type: string, ids: ntid[]): ntid {
   return `${type}[${ids.join(',')}]`;
 }
 
-export function makeSymmetricId(type: string, ids: Array<ntid>): ntid {
+export function makeSymmetricId(type: string, ids: ntid[]): ntid {
   return `${type}[${Array.from(ids).sort().join(',')}]`;
 }
 
 export function getTypeFromId(id: ntid): string {
   let match = /^([^[]+)\[.*\]$/.exec(id);
-  assert(match, `${id} is not a valid NTID`);
+  invariant(match, `${id} is not a valid NTID`);
   return match[1];
 }
 
