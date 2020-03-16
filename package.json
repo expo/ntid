@@ -1,18 +1,22 @@
 {
   "name": "ntid",
-  "version": "1.1.1",
+  "version": "1.2.1",
   "description": "Self-documenting IDs that can be generated in any environment",
-  "main": "build/ntid.js",
   "bin": "build/cli.js",
+  "main": "build/ntid.js",
+  "types": "build/ntid.d.ts",
   "files": [
-    "build"
+    "build",
+    "src"
   ],
   "scripts": {
-    "build": "babel -d build src",
-    "prepublish": "babel -d build src",
-    "test": "jest"
+    "clean": "rm -rf build coverage",
+    "test": "jest",
+    "prepublish": "rm -rf build coverage",
+    "prepare": "tsc"
   },
   "jest": {
+    "preset": "ts-jest",
     "rootDir": "src"
   },
   "repository": {
@@ -29,17 +33,18 @@
   },
   "homepage": "https://github.com/exponentjs/ntid#readme",
   "dependencies": {
-    "invariant": "^2.2.2",
+    "invariant": "^2.2.4",
     "optimist": "^0.6.1",
-    "uuid": "^3.0.1"
+    "process": "^0.11.10",
+    "uuid": "^7.0.2"
   },
   "devDependencies": {
-    "babel-cli": "^6.2.0",
-    "babel-core": "^6.2.1",
-    "babel-jest": "^18.0.0",
-    "babel-plugin-syntax-flow": "^6.1.18",
-    "babel-plugin-transform-flow-strip-types": "^6.1.18",
-    "babel-preset-es2015": "^6.1.18",
-    "jest-cli": "^18.1.0"
+    "@types/invariant": "^2.2.4",
+    "@types/jest": "^25.1.4",
+    "@types/node": "^13.9.1",
+    "@types/uuid": "^7.0.0",
+    "jest": "^25.1.0",
+    "ts-jest": "^25.2.1",
+    "typescript": "^3.8.3"
   }
 }

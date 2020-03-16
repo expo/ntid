@@ -1,4 +1,4 @@
-const ntid = require('../ntid');
+import ntid from '../ntid';
 
 it('makes IDs with the given type', () => {
   let id = ntid.makeId('test');
