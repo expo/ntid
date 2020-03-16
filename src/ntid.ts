@@ -15,11 +15,9 @@
  *     separate entities for things that should be singletons. It's also useful
  *     as a primary key in RethinkDB (or any other system that doesn't allow
  *     compound primary keys).
- *
- * @flow
  */
 import invariant from 'invariant';
-import uuidV4 from 'uuid/v4';
+import { v4 as uuidv4 } from 'uuid';
 
 export type ntid = string;
 
@@ -33,8 +31,8 @@ if (256 % UUID_ALPHABET.length !== 0) {
 
 export function makeId(type: string): ntid {
   let bytes = new Array(32);
-  uuidV4(null, bytes, 0);
-  uuidV4(null, bytes, 16);
+  uuidv4(null, bytes, 0);
+  uuidv4(null, bytes, 16);
 
   let body = bytes.slice(0, UUID_LENGTH).map(
     byte => UUID_ALPHABET[byte % UUID_ALPHABET.length]
