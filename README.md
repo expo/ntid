@@ -20,17 +20,11 @@ example[RY7ss1F2-Y7S0nvTbNBH73]
 
 ## API
 
+See inline docblocks for full API and documentation.
+
 ### makeId(type)
 
 Takes a string denoting the type of NTID to generate and returns a new randomly generated NTID.
-
-### makeCompoundId(type, ids)
-
-A compound NTID is made up of nested NTIDs. Like all NTIDs, it has its own type but instead of a randomly generated body, it contains nested NTIDs. The order of the nested NTIDs matches the order in which they appear in the given array, which makes them useful for directed edges.
-
-### makeSymmetricId(type, ids)
-
-A symmetric NTID is a compound ID that sorts its nested NTIDs in a consistent manner. This is useful for undirected edges, hence the symmetry.
 
 ### getTypeFromId(id)
 
