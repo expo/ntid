@@ -1,0 +1,22 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          cache: yarn
+          node-version-file: package.json
+      - run: yarn --immutable
+      - run: yarn tsc
+      - run: yarn lint --max-warnings=0
+      - run: yarn test --coverage
