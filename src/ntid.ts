@@ -19,7 +19,7 @@
 import invariant from 'invariant';
 import { v4 as uuidv4 } from 'uuid';
 
-export type ntid = string;
+export type NTID<TypeName extends string> = `${TypeName}[${string}]`;
 
 const NTID_LENGTH = 22;
 
@@ -34,7 +34,7 @@ if (256 % BASE_64_URL_ALPHABET.length !== 0) {
  * @param type type of NTID to generate
  * @returns new randomly generated NTID of the form Type[...]
  */
-export function makeId(type: string): ntid {
+export function makeId<TypeName extends string>(type: TypeName): NTID<TypeName> {
   const bytes = new Array(32);
   uuidv4(null, bytes, 0);
   uuidv4(null, bytes, 16);
@@ -56,7 +56,10 @@ export function makeId(type: string): ntid {
  * @param ids nested NTIDs to include in the compound NTID
  * @returns new compound NTID of the form Type[...]
  */
-export function makeCompoundId(type: string, ids: ntid[]): ntid {
+export function makeCompoundId<TypeName extends string>(
+  type: TypeName,
+  ids: NTID<any>[],
+): NTID<TypeName> {
   return `${type}[${ids.join(',')}]`;
 }
 
@@ -68,14 +71,17 @@ export function makeCompoundId(type: string, ids: ntid[]): ntid {
  * @param ids nested NTIDs to include in the symmetric NTID
  * @returns new symmetric NTID of the form Type[...]
  */
-export function makeSymmetricId(type: string, ids: ntid[]): ntid {
+export function makeSymmetricId<TypeName extends string>(
+  type: TypeName,
+  ids: NTID<any>[],
+): NTID<TypeName> {
   return `${type}[${Array.from(ids).sort().join(',')}]`;
 }
 
-function getTypeAndInnerPart(id: ntid): [string, string] {
+function getTypeAndInnerPart<TypeName extends string>(id: NTID<TypeName>): [TypeName, string] {
   const match = /^([^[]+)\[(.*)\]$/.exec(id);
   invariant(match, `${id} is not a valid NTID`);
-  return [match[1], match[2]];
+  return [match[1] as TypeName, match[2]];
 }
 
 /**
@@ -87,7 +93,7 @@ function getTypeAndInnerPart(id: ntid): [string, string] {
  * @param id NTID
  * @returns the type of the NTID
  */
-export function getTypeFromId(id: ntid): string {
+export function getTypeFromId<TypeName extends string>(id: NTID<TypeName>): TypeName {
   return getTypeAndInnerPart(id)[0];
 }
 
@@ -100,7 +106,7 @@ export function getTypeFromId(id: ntid): string {
  * @param id NTID
  * @returns the inner part of the NTID
  */
-export function getInnerPartOfId(id: ntid): string {
+export function getInnerPartOfId<TypeName extends string>(id: NTID<TypeName>): string {
   return getTypeAndInnerPart(id)[1];
 }
 
@@ -111,7 +117,10 @@ export function getInnerPartOfId(id: ntid): string {
  * @param innerPart Inner part of the NTID, typically obtained using `getInnerPartOfId`
  * @returns Reconstructed NTID of the form Type[innerPart]
  */
-export function reconstructIdFromTypeAndInnerPart(type: string, innerPart: string): ntid {
+export function reconstructIdFromTypeAndInnerPart<TypeName extends string>(
+  type: TypeName,
+  innerPart: string,
+): NTID<TypeName> {
   return `${type}[${innerPart}]`;
 }
 
@@ -122,7 +131,7 @@ export function reconstructIdFromTypeAndInnerPart(type: string, innerPart: strin
  * @param id NTID to encode
  * @returns 17-byte Uint8Array representing the inner part of the NTID
  */
-export function encodeIdToBytes(id: ntid): Uint8Array {
+export function encodeIdToBytes<TypeName extends string>(id: NTID<TypeName>): Uint8Array {
   const innerPart = getInnerPartOfId(id);
   invariant(
     innerPart.length === NTID_LENGTH,
@@ -160,7 +169,10 @@ export function encodeIdToBytes(id: ntid): Uint8Array {
  * @param bytes 17-byte Uint8Array representing the inner part of the NTID
  * @returns Reconstructed NTID of the form Type[innerPart]
  */
-export function decodeIdFromBytes(type: string, bytes: Uint8Array): ntid {
+export function decodeIdFromBytes<TypeName extends string>(
+  type: TypeName,
+  bytes: Uint8Array,
+): NTID<TypeName> {
   invariant(bytes.length === 17, `Expected 17 bytes, got ${bytes.length} bytes`);
 
   // decode bytes to base64

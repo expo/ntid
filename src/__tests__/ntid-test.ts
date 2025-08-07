@@ -65,7 +65,7 @@ describe(getTypeFromId, () => {
   });
 
   it('throws an error for invalid ids', () => {
-    expect(() => getTypeFromId('invalid_id')).toThrow();
+    expect(() => getTypeFromId('invalid_id' as any)).toThrow();
   });
 });
 
@@ -85,7 +85,7 @@ describe(getInnerPartOfId, () => {
   });
 
   it('throws an error for invalid ids', () => {
-    expect(() => getInnerPartOfId('invalid_id')).toThrow();
+    expect(() => getInnerPartOfId('invalid_id' as any)).toThrow();
   });
 });
 
