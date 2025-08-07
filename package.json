@@ -36,15 +36,18 @@
     "invariant": "^2.2.4",
     "optimist": "^0.6.1",
     "process": "^0.11.10",
-    "uuid": "^7.0.2"
+    "uuid": "^8.3.0"
   },
   "devDependencies": {
+    "@tsconfig/strictest": "^2.0.5",
     "@types/invariant": "^2.2.4",
-    "@types/jest": "^25.1.4",
-    "@types/node": "^13.9.1",
-    "@types/uuid": "^7.0.0",
-    "jest": "^25.1.0",
-    "ts-jest": "^25.2.1",
-    "typescript": "^3.8.3"
+    "@types/node": "20.19.1",
+    "@types/uuid": "^8.3.0",
+    "eslint": "^9.29.0",
+    "eslint-config-universe": "^15.0.3",
+    "jest": "^30.0.0",
+    "prettier": "^3.5.3",
+    "ts-jest": "^29.4.1",
+    "typescript": "^5.8.3"
   }
 }

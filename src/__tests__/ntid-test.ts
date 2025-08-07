@@ -1,4 +1,15 @@
-import  { encodeIdToBytes, decodeIdFromBytes, getInnerPartOfId, getTypeFromId, makeCompoundId, makeId, makeSymmetricId, reconstructIdFromTypeAndInnerPart } from '../ntid';
+import { describe, it, expect, test } from '@jest/globals';
+
+import {
+  encodeIdToBytes,
+  decodeIdFromBytes,
+  getInnerPartOfId,
+  getTypeFromId,
+  makeCompoundId,
+  makeId,
+  makeSymmetricId,
+  reconstructIdFromTypeAndInnerPart,
+} from '../ntid';
 
 describe(makeId, () => {
   it('makes IDs with the given type', () => {
@@ -54,7 +65,7 @@ describe(getTypeFromId, () => {
   });
 
   it('throws an error for invalid ids', () => {
-    expect(() => getTypeFromId('invalid_id')).toThrowError();
+    expect(() => getTypeFromId('invalid_id')).toThrow();
   });
 });
 
@@ -74,7 +85,7 @@ describe(getInnerPartOfId, () => {
   });
 
   it('throws an error for invalid ids', () => {
-    expect(() => getInnerPartOfId('invalid_id')).toThrowError();
+    expect(() => getInnerPartOfId('invalid_id')).toThrow();
   });
 });
 
@@ -103,7 +114,7 @@ describe(decodeIdFromBytes, () => {
     const id = makeId(type);
     const bytes = encodeIdToBytes(id);
     const decoded = decodeIdFromBytes(type, bytes);
-      expect(decoded).toEqual(id);
+    expect(decoded).toEqual(id);
   });
 
   test('test many times with random ids', () => {

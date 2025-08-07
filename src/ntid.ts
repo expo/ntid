@@ -23,14 +23,14 @@ export type ntid = string;
 export type ntidByteEncoding = Uint8Array;
 
 const UUID_LENGTH = 22;
-const UUID_ALPHABET =
-  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
+const UUID_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
 
-const BASE_64_URL_ALPHABET =
-  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_'; // this is the Base64URL alphabet
+const BASE_64_URL_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_'; // this is the Base64URL alphabet
 
 if (UUID_ALPHABET !== BASE_64_URL_ALPHABET) {
-  console.warn('UUID alphabet must be the same as Base64URL alphabet for base64 encoding/decoding to work correctly');
+  console.warn(
+    'UUID alphabet must be the same as Base64URL alphabet for base64 encoding/decoding to work correctly',
+  );
 }
 
 if (256 % UUID_ALPHABET.length !== 0) {
@@ -42,9 +42,10 @@ export function makeId(type: string): ntid {
   uuidv4(null, bytes, 0);
   uuidv4(null, bytes, 16);
 
-  const body = bytes.slice(0, UUID_LENGTH).map(
-    byte => UUID_ALPHABET[byte % UUID_ALPHABET.length]
-  ).join('');
+  const body = bytes
+    .slice(0, UUID_LENGTH)
+    .map((byte) => UUID_ALPHABET[byte % UUID_ALPHABET.length])
+    .join('');
   return `${type}[${body}]`;
 }
 
@@ -76,7 +77,10 @@ export function reconstructIdFromTypeAndInnerPart(type: string, innerPart: strin
 
 export function encodeIdToBytes(id: ntid): ntidByteEncoding {
   const innerPart = getInnerPartOfId(id);
-  invariant(innerPart.length === UUID_LENGTH, `Inner part of NTID must be ${UUID_LENGTH} characters long, got ${innerPart.length}`);
+  invariant(
+    innerPart.length === UUID_LENGTH,
+    `Inner part of NTID must be ${UUID_LENGTH} characters long, got ${innerPart.length}`,
+  );
 
   // Append one zero sextet ('A' == value 0) so decoding yields 17 bytes.
   // Add padding character 'A' to make it 23 characters for proper base64url decoding
@@ -93,7 +97,7 @@ export function encodeIdToBytes(id: ntid): ntidByteEncoding {
   const binaryString = atob(base64URLString);
   const uint8Array = new Uint8Array(binaryString.length);
   for (let i = 0; i < binaryString.length; i++) {
-      uint8Array[i] = binaryString.charCodeAt(i);
+    uint8Array[i] = binaryString.charCodeAt(i);
   }
 
   invariant(uint8Array.length === 17, `Expected 17 bytes, got ${uint8Array.length} bytes`);
@@ -109,8 +113,11 @@ export function decodeIdFromBytes(type: string, bytes: ntidByteEncoding): ntid {
   const base64String = btoa(binaryString); // convert to base64 string
 
   // convert base64 to base64url and remove base64 padding and our padding 'A'
-  const base64URLStringBeforeRemovalOfPadding = base64String.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-  if (base64URLStringBeforeRemovalOfPadding[base64URLStringBeforeRemovalOfPadding.length - 1] !== 'A') {
+  const base64URLStringBeforeRemovalOfPadding = base64String
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/, '');
+  if (!base64URLStringBeforeRemovalOfPadding.endsWith('A')) {
     throw new Error('Last base64url char should be A (zero sextet)');
   }
   const innerPart = base64URLStringBeforeRemovalOfPadding.slice(0, -1);
