@@ -17,10 +17,20 @@ module.exports = defineConfig([
     },
   },
   {
-    settings: {
-      jest: {
-        version: 30,
-      },
+    rules: {
+      'no-void': [
+        'warn',
+        {
+          allowAsStatement: true,
+        },
+      ],
+      '@typescript-eslint/no-confusing-void-expression': 'warn',
+      '@typescript-eslint/no-misused-promises': [
+        'error',
+        {
+          checksVoidReturn: false,
+        },
+      ],
     },
   },
 ]);

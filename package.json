@@ -11,14 +11,10 @@
   ],
   "scripts": {
     "clean": "rm -rf build coverage",
-    "test": "jest",
+    "test": "node --test \"src/**/__tests__/*-test.ts\"",
     "prepublish": "rm -rf build coverage",
     "prepare": "tsc",
     "lint": "eslint ."
-  },
-  "jest": {
-    "preset": "ts-jest",
-    "rootDir": "src"
   },
   "repository": {
     "type": "git",
@@ -27,6 +23,12 @@
   "keywords": [
     "ids"
   ],
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "volta": {
+    "node": "24.5.0"
+  },
   "author": "Exponent",
   "license": "MIT",
   "bugs": {
@@ -46,9 +48,7 @@
     "@types/uuid": "^8.3.0",
     "eslint": "^9.29.0",
     "eslint-config-universe": "^15.0.3",
-    "jest": "^30.0.0",
     "prettier": "^3.5.3",
-    "ts-jest": "^29.4.1",
     "typescript": "^5.8.3"
   }
 }

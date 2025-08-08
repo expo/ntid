@@ -1,4 +1,5 @@
-import { describe, test, it, expect } from '@jest/globals';
+import assert from 'node:assert/strict';
+import { describe, test, it } from 'node:test';
 
 import {
   encodeIdToBytes,
@@ -11,119 +12,123 @@ import {
   reconstructIdFromTypeAndInnerPart,
 } from '../ntid';
 
-describe(makeId, () => {
-  it('makes IDs with the given type', () => {
+void describe(`${makeId.name}`, () => {
+  void it('makes IDs with the given type', () => {
     const id = makeId('test');
-    expect(id).toMatch(/^test\[/);
+    assert.match(id, /^test\[/);
   });
 
-  it('makes IDs with 22 random characters', () => {
+  void it('makes IDs with 22 random characters', () => {
     const type = 'test';
     const id = makeId(type);
-    expect(id.length).toBe(type.length + 2 + 22);
+    assert.equal(id.length, type.length + 2 + 22);
   });
 });
 
-describe(makeCompoundId, () => {
-  it('makes compound IDs', () => {
+void describe(`${makeCompoundId.name}`, () => {
+  void it('makes compound IDs', () => {
     const id1 = makeId('type1');
     const id2 = makeId('type2');
 
     const compoundId = makeCompoundId('compound', [id1, id2]);
-    expect(compoundId).toMatch(/^compound\[/);
+    assert.match(compoundId, /^compound\[/);
   });
 });
 
-describe(makeSymmetricId, () => {
-  it('makes symmetric compound IDs', () => {
+void describe(`${makeSymmetricId.name}`, () => {
+  void it('makes symmetric compound IDs', () => {
     const id1 = makeId('type1');
     const id2 = makeId('type2');
 
     const symmetricId1 = makeSymmetricId('sym', [id1, id2]);
     const symmetricId2 = makeSymmetricId('sym', [id2, id1]);
-    expect(symmetricId1).toMatch(/^sym\[/);
-    expect(symmetricId1).toBe(symmetricId2);
+    assert.match(symmetricId1, /^sym\[/);
+    assert.equal(symmetricId1, symmetricId2);
   });
 });
 
-describe(getTypeFromId, () => {
-  it('extracts the type from constant case', () => {
+void describe(`${getTypeFromId.name}`, () => {
+  void it('extracts the type from constant case', () => {
     const id = `FakeType[MZlL-RDgaMn05ebg3iyTt8]`;
     const type = getTypeFromId(id);
-    expect(type).toBe('FakeType');
+    assert.equal(type, 'FakeType');
   });
 
-  it('extracts the types of ids', () => {
+  void it('extracts the types of ids', () => {
     const type = 'test';
     const compoundType = 'compound';
 
     const id = makeId(type);
-    expect(getTypeFromId(id)).toBe(type);
+    assert.equal(getTypeFromId(id), type);
 
     const compoundId = makeCompoundId(compoundType, [id, id]);
-    expect(getTypeFromId(compoundId)).toBe(compoundType);
+    assert.equal(getTypeFromId(compoundId), compoundType);
   });
 
-  it('throws an error for invalid ids', () => {
-    expect(() => getTypeFromId('invalid_id' as any)).toThrow();
+  void it('throws an error for invalid ids', () => {
+    assert.throws(() => {
+      getTypeFromId('invalid_id' as any);
+    });
   });
 });
 
-describe(getInnerPartOfId, () => {
-  it('extracts the inner part of constant case', () => {
+void describe(`${getInnerPartOfId.name}`, () => {
+  void it('extracts the inner part of constant case', () => {
     const id = `FakeType[MZlL-RDgaMn05ebg3iyTt8]`;
     const innerPart = getInnerPartOfId(id);
-    expect(innerPart).toBe('MZlL-RDgaMn05ebg3iyTt8');
+    assert.equal(innerPart, 'MZlL-RDgaMn05ebg3iyTt8');
   });
 
-  it('extracts the inner part of ids', () => {
+  void it('extracts the inner part of ids', () => {
     const type = 'test';
     const id = makeId(type);
     const innerPart = getInnerPartOfId(id);
-    expect(innerPart).toHaveLength(22);
-    expect(id).toBe(`${type}[${innerPart}]`);
+    assert.equal(innerPart.length, 22);
+    assert.equal(id, `${type}[${innerPart}]`);
   });
 
-  it('throws an error for invalid ids', () => {
-    expect(() => getInnerPartOfId('invalid_id' as any)).toThrow();
+  void it('throws an error for invalid ids', () => {
+    assert.throws(() => {
+      getInnerPartOfId('test' as any);
+    });
   });
 });
 
-describe(reconstructIdFromTypeAndInnerPart, () => {
-  it('reconstructs the id from type and inner part', () => {
+void describe(`${reconstructIdFromTypeAndInnerPart.name}`, () => {
+  void it('reconstructs the id from type and inner part', () => {
     const type = 'FakeType';
     const innerPart = 'MZlL-RDgaMn05ebg3iyTt8';
     const id = reconstructIdFromTypeAndInnerPart(type, innerPart);
-    expect(id).toBe(`${type}[${innerPart}]`);
+    assert.equal(id, `${type}[${innerPart}]`);
   });
 });
 
-describe(encodeIdToBytes, () => {
-  it('returns the bytes from an id', () => {
+void describe(`${encodeIdToBytes.name}`, () => {
+  void it('returns the bytes from an id', () => {
     const type = 'test';
     const id = makeId(type);
     const bytes = encodeIdToBytes(id);
-    expect(bytes).toBeInstanceOf(Uint8Array);
-    expect(bytes.length).toBe(17);
+    assert.equal(bytes instanceof Uint8Array, true);
+    assert.equal(bytes.length, 17);
   });
 });
 
-describe(decodeIdFromBytes, () => {
-  it('returns the inner part from bytes', () => {
+void describe(`${decodeIdFromBytes.name}`, () => {
+  void it('returns the inner part from bytes', () => {
     const type = 'test';
     const id = makeId(type);
     const bytes = encodeIdToBytes(id);
     const decoded = decodeIdFromBytes(type, bytes);
-    expect(decoded).toEqual(id);
+    assert.equal(decoded, id);
   });
 
-  test('test many times with random ids', () => {
+  void test('test many times with random ids', () => {
     for (let i = 0; i < 10000; i++) {
       const type = `test${i}`;
       const id = makeId(type);
       const bytes = encodeIdToBytes(id);
       const decoded = decodeIdFromBytes(type, bytes);
-      expect(decoded).toEqual(id);
+      assert.equal(decoded, id);
     }
   });
 });
