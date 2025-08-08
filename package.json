@@ -22,7 +22,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/exponentjs/ntid.git"
+    "url": "git+https://github.com/expo/ntid.git"
   },
   "keywords": [
     "ids"
@@ -30,9 +30,9 @@
   "author": "Exponent",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/exponentjs/ntid/issues"
+    "url": "https://github.com/expo/ntid/issues"
   },
-  "homepage": "https://github.com/exponentjs/ntid#readme",
+  "homepage": "https://github.com/expo/ntid#readme",
   "dependencies": {
     "invariant": "^2.2.4",
     "optimist": "^0.6.1",
