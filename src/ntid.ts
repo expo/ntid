@@ -22,21 +22,21 @@ import { v4 as uuidv4 } from 'uuid';
 export type ntid = string;
 
 const UUID_LENGTH = 22;
-const UUID_ALPHABET =
-  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
+const UUID_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
 
 if (256 % UUID_ALPHABET.length !== 0) {
   console.warn('UUID alphabet size must divide 256 evenly to avoid modulo bias');
 }
 
 export function makeId(type: string): ntid {
-  let bytes = new Array(32);
+  const bytes = new Array(32);
   uuidv4(null, bytes, 0);
   uuidv4(null, bytes, 16);
 
-  let body = bytes.slice(0, UUID_LENGTH).map(
-    byte => UUID_ALPHABET[byte % UUID_ALPHABET.length]
-  ).join('');
+  const body = bytes
+    .slice(0, UUID_LENGTH)
+    .map((byte) => UUID_ALPHABET[byte % UUID_ALPHABET.length])
+    .join('');
   return `${type}[${body}]`;
 }
 
@@ -49,7 +49,7 @@ export function makeSymmetricId(type: string, ids: ntid[]): ntid {
 }
 
 export function getTypeFromId(id: ntid): string {
-  let match = /^([^[]+)\[.*\]$/.exec(id);
+  const match = /^([^[]+)\[.*\]$/.exec(id);
   invariant(match, `${id} is not a valid NTID`);
   return match[1];
 }

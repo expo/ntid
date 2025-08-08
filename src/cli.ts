@@ -3,10 +3,10 @@
 import optimist from 'optimist';
 import process from 'process';
 
-import ntid from './ntid';
+import { makeId } from './ntid';
 
-let parser = optimist.usage('Usage: $0 <type>');
-let { argv } = parser;
+const parser = optimist.usage('Usage: $0 <type>');
+const { argv } = parser;
 
 if (argv._.length === 0) {
   parser.showHelp();
@@ -17,10 +17,10 @@ if (argv._.length > 1) {
   process.exit(1);
 }
 
-let type = argv._[0];
+const type = argv._[0];
 if (!/^[a-z\d]+$/i.test(type)) {
   console.error('The NTID type can contain only letters and numbers');
   process.exit(1);
 }
 
-console.log(ntid.makeId(type));
+console.log(makeId(type));
